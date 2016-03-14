@@ -5,7 +5,11 @@ Text
 .. toctree::
    :titlesonly:
 
+<<<<<<< HEAD
    tab-stops
+=======
+   hyperlink
+>>>>>>> docs: document hyperlink analysis
    font-highlight-color
    paragraph-format
    font
@@ -13,3 +17,5 @@ Text
    underline
    run-content
    breaks
+   hyperlink
+
