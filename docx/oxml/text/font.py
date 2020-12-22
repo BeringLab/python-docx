@@ -32,6 +32,7 @@ class CT_Fonts(BaseOxmlElement):
     """
     ascii = OptionalAttribute('w:ascii', ST_String)
     hAnsi = OptionalAttribute('w:hAnsi', ST_String)
+    eastAsia = OptionalAttribute('w:eastAsia', ST_String)
 
 
 class CT_Highlight(BaseOxmlElement):
@@ -154,6 +155,23 @@ class CT_RPr(BaseOxmlElement):
             return
         rFonts = self.get_or_add_rFonts()
         rFonts.hAnsi = value
+
+    @property
+    def rFonts_eastAsia(self):
+        """
+        The value of `w:rFonts/@w:eastAsia` or |None| if not present.
+        """
+        rFonts = self.rFonts
+        if rFonts is None:
+            return None
+        return rFonts.eastAsia
+
+    @rFonts_hAnsi.setter
+    def rFonts_eastAsia(self, value):
+        if value is None and self.rFonts is None:
+            return
+        rFonts = self.get_or_add_rFonts()
+        rFonts.eastAsia = value
 
     @property
     def style(self):
