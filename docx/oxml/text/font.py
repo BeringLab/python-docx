@@ -166,7 +166,7 @@ class CT_RPr(BaseOxmlElement):
             return None
         return rFonts.eastAsia
 
-    @rFonts_hAnsi.setter
+    @rFonts_eastAsia.setter
     def rFonts_eastAsia(self, value):
         if value is None and self.rFonts is None:
             return
