@@ -227,7 +227,7 @@ class DocumentPart(BaseStoryPart):
             endnotes_part = EndnotesPart.default(self.package)
             self.relate_to(endnotes_part, RT.ENDNOTES)
             return endnotes_part
-    
+
     @property
     def _theme_part(self):
         """
@@ -240,7 +240,7 @@ class DocumentPart(BaseStoryPart):
             theme_part = ThemePart.default(self.package)
             self.relate_to(theme_part, RT.THEME)
             return theme_part
-    
+
     @property
     def _font_table_part(self):
         """
