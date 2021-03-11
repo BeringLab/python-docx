@@ -8,6 +8,8 @@ from docx.document import Document
 from docx.opc.constants import RELATIONSHIP_TYPE as RT
 from docx.parts.hdrftr import FooterPart, HeaderPart
 from docx.parts.fntent import FootnotesPart, EndnotesPart
+from docx.parts.theme import ThemePart
+from docx.parts.fnttbl import FontTablePart
 from docx.parts.numbering import NumberingPart
 from docx.parts.settings import SettingsPart
 from docx.parts.story import BaseStoryPart
@@ -156,7 +158,23 @@ class DocumentPart(BaseStoryPart):
         Returns |None| if no endnote matches *endnote_id*
         """
         return self.endnotes.get_by_id(endnote_id)
+
+    @property
+    def theme(self):
+        """
+        A |Theme| object providing access to the theme in the theme part
+        of this document.
+        """
+        return self._theme_part.theme
     
+    @property
+    def font_table(self):
+        """
+        A |FontTable| object providing access to the font table in the fonttable part
+        of this document.
+        """
+        return self._font_table_part.font_table
+
     @property
     def _settings_part(self):
         """
@@ -209,3 +227,29 @@ class DocumentPart(BaseStoryPart):
             endnotes_part = EndnotesPart.default(self.package)
             self.relate_to(endnotes_part, RT.ENDNOTES)
             return endnotes_part
+
+    @property
+    def _theme_part(self):
+        """
+        Instance of |ThemePart| for this document. Creates an default theme
+        part if one is not present.
+        """
+        try:
+            return self.part_related_by(RT.THEME)
+        except KeyError:
+            theme_part = ThemePart.default(self.package)
+            self.relate_to(theme_part, RT.THEME)
+            return theme_part
+
+    @property
+    def _font_table_part(self):
+        """
+        Instance of |FontTablePart| for this document. Creates an default font table
+        part if one is not present.
+        """
+        try:
+            return self.part_related_by(RT.FONT_TABLE)
+        except KeyError:
+            font_table_part = FontTablePart.default(self.package)
+            self.relate_to(font_table_part, RT.FONT_TABLE)
+            return font_table_part
