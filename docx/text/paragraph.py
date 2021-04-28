@@ -25,7 +25,7 @@ class Paragraph(RunItemContainer):
         self._p = self._element = p
 
     def add_run(self, text=None, style=None):
-        return super(Paragraph, self).add_paragraph(text, style)
+        return super(Paragraph, self).add_run(text, style)
 
     @property
     def alignment(self):
