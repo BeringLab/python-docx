@@ -17,6 +17,9 @@ from docx.parts.image import ImagePart
 from docx.parts.numbering import NumberingPart
 from docx.parts.settings import SettingsPart
 from docx.parts.styles import StylesPart
+from docx.parts.fntent import FootnotesPart, EndnotesPart
+from docx.parts.theme import ThemePart
+from docx.parts.fnttbl import FontTablePart
 
 
 def part_class_selector(content_type, reltype):
@@ -33,6 +36,10 @@ PartFactory.part_type_for[CT.WML_HEADER] = HeaderPart
 PartFactory.part_type_for[CT.WML_NUMBERING] = NumberingPart
 PartFactory.part_type_for[CT.WML_SETTINGS] = SettingsPart
 PartFactory.part_type_for[CT.WML_STYLES] = StylesPart
+PartFactory.part_type_for[CT.WML_FOOTNOTES] = FootnotesPart
+PartFactory.part_type_for[CT.WML_ENDNOTES] = EndnotesPart
+PartFactory.part_type_for[CT.OFC_THEME] = ThemePart
+PartFactory.part_type_for[CT.WML_FONT_TABLE] = FontTablePart
 
 del (
     CT,
