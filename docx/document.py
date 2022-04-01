@@ -2,13 +2,18 @@
 
 """|Document| and closely related objects"""
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals, annotations
+from typing import TYPE_CHECKING
 
 from docx.blkcntnr import BlockItemContainer
 from docx.enum.section import WD_SECTION
 from docx.enum.text import WD_BREAK
 from docx.section import Section, Sections
 from docx.shared import ElementProxy, Emu
+
+if TYPE_CHECKING:
+    from docx.parts.document import DocumentPart
+    from docx.styles.styles import Styles
 
 
 class Document(ElementProxy):
@@ -20,7 +25,7 @@ class Document(ElementProxy):
 
     __slots__ = ('_part', '__body')
 
-    def __init__(self, element, part):
+    def __init__(self, element, part: DocumentPart):
         super(Document, self).__init__(element)
         self._part = part
         self.__body = None
@@ -121,7 +126,7 @@ class Document(ElementProxy):
         return self._body.paragraphs
 
     @property
-    def part(self):
+    def part(self) -> DocumentPart:
         """
         The |DocumentPart| object of this document.
         """
@@ -148,7 +153,7 @@ class Document(ElementProxy):
         return self._part.settings
 
     @property
-    def styles(self):
+    def styles(self) -> Styles:
         """
         A |Styles| object providing access to the styles in this document.
         """
