@@ -14,7 +14,9 @@ from docx.shared import ElementProxy, Emu
 if TYPE_CHECKING:
     from docx.parts.document import DocumentPart
     from docx.styles.styles import Styles
-
+    from docx.shape import InlineShapes
+    from docx.oxml.document import CT_Document
+    from docx.oxml.section import CT_SectPr
 
 class Document(ElementProxy):
     """WordprocessingML (WML) document.
@@ -24,6 +26,7 @@ class Document(ElementProxy):
     """
 
     __slots__ = ('_part', '__body')
+    _element: CT_Document
 
     def __init__(self, element, part: DocumentPart):
         super(Document, self).__init__(element)
@@ -76,14 +79,14 @@ class Document(ElementProxy):
         run = self.add_paragraph().add_run()
         return run.add_picture(image_path_or_stream, width, height)
 
-    def add_section(self, start_type=WD_SECTION.NEW_PAGE):
+    def add_section(self, start_type=WD_SECTION.NEW_PAGE) -> Section:
         """
         Return a |Section| object representing a new section added at the end
         of the document. The optional *start_type* argument must be a member
         of the :ref:`WdSectionStart` enumeration, and defaults to
         ``WD_SECTION.NEW_PAGE`` if not provided.
         """
-        new_sectPr = self._element.body.add_section_break()
+        new_sectPr: CT_SectPr = self._element.body.add_section_break()
         new_sectPr.start_type = start_type
         return Section(new_sectPr, self._part)
 
@@ -107,7 +110,7 @@ class Document(ElementProxy):
         return self._part.core_properties
 
     @property
-    def inline_shapes(self):
+    def inline_shapes(self) -> InlineShapes:
         """
         An |InlineShapes| object providing access to the inline shapes in
         this document. An inline shape is a graphical object, such as

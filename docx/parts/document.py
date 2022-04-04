@@ -2,7 +2,8 @@
 
 """|DocumentPart| and closely related objects"""
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals, annotations
+from typing import TYPE_CHECKING
 
 from docx.document import Document
 from docx.opc.constants import RELATIONSHIP_TYPE as RT
@@ -17,6 +18,10 @@ from docx.parts.styles import StylesPart
 from docx.shape import InlineShapes
 from docx.shared import lazyproperty
 
+if TYPE_CHECKING:
+    from docx.fnttbl import FontTable
+    from docx.styles.styles import Styles
+    
 
 class DocumentPart(BaseStoryPart):
     """Main document part of a WordprocessingML (WML) package, aka a .docx file.
@@ -48,7 +53,7 @@ class DocumentPart(BaseStoryPart):
         return self.package.core_properties
 
     @property
-    def document(self):
+    def document(self) -> Document:
         """
         A |Document| object providing access to the content of this document.
         """
@@ -58,7 +63,7 @@ class DocumentPart(BaseStoryPart):
         """Remove related header part identified by *rId*."""
         self.drop_rel(rId)
 
-    def footer_part(self, rId):
+    def footer_part(self, rId) -> FooterPart:
         """Return |FooterPart| related by *rId*."""
         return self.related_parts[rId]
 
@@ -85,7 +90,7 @@ class DocumentPart(BaseStoryPart):
         return self.related_parts[rId]
 
     @lazyproperty
-    def inline_shapes(self):
+    def inline_shapes(self) -> InlineShapes:
         """
         The |InlineShapes| instance containing the inline shapes in the
         document.
@@ -122,7 +127,7 @@ class DocumentPart(BaseStoryPart):
         return self._settings_part.settings
 
     @property
-    def styles(self):
+    def styles(self) -> Styles:
         """
         A |Styles| object providing access to the styles in the styles part
         of this document.
@@ -168,7 +173,7 @@ class DocumentPart(BaseStoryPart):
         return self._theme_part.theme
     
     @property
-    def font_table(self):
+    def font_table(self) -> FontTable:
         """
         A |FontTable| object providing access to the font table in the fonttable part
         of this document.
@@ -176,7 +181,7 @@ class DocumentPart(BaseStoryPart):
         return self._font_table_part.font_table
 
     @property
-    def _settings_part(self):
+    def _settings_part(self) -> SettingsPart:
         """
         A |SettingsPart| object providing access to the document-level
         settings for this document. Creates a default settings part if one is
@@ -190,7 +195,7 @@ class DocumentPart(BaseStoryPart):
             return settings_part
 
     @property
-    def _styles_part(self):
+    def _styles_part(self) -> StylesPart:
         """
         Instance of |StylesPart| for this document. Creates an empty styles
         part if one is not present.
