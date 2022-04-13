@@ -5,8 +5,11 @@ Paragraph-related proxy types.
 """
 
 from __future__ import (
-    absolute_import, division, print_function, unicode_literals,
-    annotations
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+    annotations,
 )
 from typing import TYPE_CHECKING
 
@@ -20,12 +23,14 @@ from ..oxml.ns import qn
 if TYPE_CHECKING:
     from docx.parts.document import DocumentPart
 
+
 class Paragraph(RunItemContainer):
     part: DocumentPart
 
     """
     Proxy object wrapping ``<w:p>`` element.
     """
+
     def __init__(self, p, parent):
         super(Paragraph, self).__init__(p, parent)
         self._p = self._element = p
@@ -81,10 +86,12 @@ class Paragraph(RunItemContainer):
     @property
     def runs(self):
         return super(Paragraph, self).runs
-    
+
     @property
     def inline_items(self):
-        return [self._get_inline_item_class(t.tag)(t, self) for t in self._p.inline_items]
+        return [
+            self._get_inline_item_class(t.tag)(t, self) for t in self._p.inline_items
+        ]
 
     @property
     def style(self):
@@ -101,9 +108,7 @@ class Paragraph(RunItemContainer):
 
     @style.setter
     def style(self, style_or_name):
-        style_id = self.part.get_style_id(
-            style_or_name, WD_STYLE_TYPE.PARAGRAPH
-        )
+        style_id = self.part.get_style_id(style_or_name, WD_STYLE_TYPE.PARAGRAPH)
         self._p.style = style_id
 
     @property
@@ -120,7 +125,7 @@ class Paragraph(RunItemContainer):
         Paragraph-level formatting, such as style, is preserved. All
         run-level formatting, such as bold or italic, is removed.
         """
-        text = ''
+        text = ""
         for inline in self.inline_items:
             text += inline.text
         return text
@@ -139,8 +144,8 @@ class Paragraph(RunItemContainer):
         return Paragraph(p, self._parent)
 
     def _get_inline_item_class(self, tag):
-        if tag == qn('w:r'):
+        if tag == qn("w:r"):
             return Run
 
-        if tag == qn('w:hyperlink'):
+        if tag == qn("w:hyperlink"):
             return Hyperlink
