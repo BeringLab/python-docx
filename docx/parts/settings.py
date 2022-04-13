@@ -33,7 +33,7 @@ class SettingsPart(XmlPart):
         return cls(partname, content_type, element, package)
 
     @property
-    def settings(self):
+    def settings(self) -> Settings:
         """
         A |Settings| proxy object for the `w:settings` element in this part,
         containing the document-level settings for this document.

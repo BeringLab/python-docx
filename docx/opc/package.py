@@ -2,7 +2,8 @@
 
 """Objects that implement reading and writing OPC packages."""
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals, annotations
+from typing import TYPE_CHECKING
 
 from docx.opc.constants import RELATIONSHIP_TYPE as RT
 from docx.opc.packuri import PACKAGE_URI, PackURI
@@ -13,6 +14,8 @@ from docx.opc.pkgwriter import PackageWriter
 from docx.opc.rel import Relationships
 from docx.opc.shared import lazyproperty
 
+if TYPE_CHECKING:
+    from docx.opc.coreprops import CoreProperties
 
 class OpcPackage(object):
     """Main API class for |python-opc|.
@@ -34,7 +37,7 @@ class OpcPackage(object):
         pass
 
     @property
-    def core_properties(self):
+    def core_properties(self) -> CoreProperties:
         """
         |CoreProperties| object providing read/write access to the Dublin
         Core properties for this document.

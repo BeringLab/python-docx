@@ -3,7 +3,7 @@
 """|DocumentPart| and closely related objects"""
 
 from __future__ import absolute_import, division, print_function, unicode_literals, annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from docx.document import Document
 from docx.opc.constants import RELATIONSHIP_TYPE as RT
@@ -21,6 +21,8 @@ from docx.shared import lazyproperty
 if TYPE_CHECKING:
     from docx.fnttbl import FontTable
     from docx.styles.styles import Styles
+    from docx.parts.settings import Settings
+    from docx.opc.coreprops import CoreProperties
     
 
 class DocumentPart(BaseStoryPart):
@@ -45,7 +47,7 @@ class DocumentPart(BaseStoryPart):
         return header_part, rId
 
     @property
-    def core_properties(self):
+    def core_properties(self) -> CoreProperties:
         """
         A |CoreProperties| object providing read/write access to the core
         properties of this document.
@@ -75,7 +77,7 @@ class DocumentPart(BaseStoryPart):
         """
         return self.styles.get_by_id(style_id, style_type)
 
-    def get_style_id(self, style_or_name, style_type):
+    def get_style_id(self, style_or_name, style_type) -> Union[str, None]:
         """
         Return the style_id (|str|) of the style of *style_type* matching
         *style_or_name*. Returns |None| if the style resolves to the default
@@ -119,7 +121,7 @@ class DocumentPart(BaseStoryPart):
         self.package.save(path_or_stream)
 
     @property
-    def settings(self):
+    def settings(self) -> Settings:
         """
         A |Settings| object providing access to the settings in the settings
         part of this document.

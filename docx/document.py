@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from docx.shape import InlineShapes
     from docx.oxml.document import CT_Document
     from docx.oxml.section import CT_SectPr
+    from docx.parts.settings import Settings
 
 class Document(ElementProxy):
     """WordprocessingML (WML) document.
@@ -143,12 +144,12 @@ class Document(ElementProxy):
         self._part.save(path_or_stream)
 
     @property
-    def sections(self):
+    def sections(self) -> Sections:
         """|Sections| object providing access to each section in this document."""
         return Sections(self._element, self._part)
 
     @property
-    def settings(self):
+    def settings(self) -> Settings:
         """
         A |Settings| object providing access to the document-level settings
         for this document.
@@ -185,7 +186,7 @@ class Document(ElementProxy):
         )
 
     @property
-    def _body(self):
+    def _body(self) -> _Body:
         """
         The |_Body| instance containing the content for this document.
         """

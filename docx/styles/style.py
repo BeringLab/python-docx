@@ -7,6 +7,7 @@ Style object hierarchy.
 from __future__ import (
     absolute_import, division, print_function, unicode_literals
 )
+from typing import Union
 
 from . import BabelFish
 from ..enum.style import WD_STYLE_TYPE
@@ -27,7 +28,11 @@ def StyleFactory(style_elm):
         WD_STYLE_TYPE.LIST:      _NumberingStyle
     }[style_elm.type]
 
-    return style_cls(style_elm)
+    style_cls_result: Union[_ParagraphStyle, 
+                            _CharacterStyle, 
+                            _TableStyle, 
+                            _NumberingStyle] = style_cls(style_elm)
+    return style_cls_result
 
 
 class BaseStyle(ElementProxy):
