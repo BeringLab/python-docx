@@ -80,7 +80,7 @@ class Document(ElementProxy):
         run = self.add_paragraph().add_run()
         return run.add_picture(image_path_or_stream, width, height)
 
-    def add_section(self, start_type=WD_SECTION.NEW_PAGE) -> Section:
+    def add_section(self, start_type: int=WD_SECTION.NEW_PAGE) -> Section:
         """
         Return a |Section| object representing a new section added at the end
         of the document. The optional *start_type* argument must be a member

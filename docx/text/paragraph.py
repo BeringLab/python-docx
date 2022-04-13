@@ -5,18 +5,24 @@ Paragraph-related proxy types.
 """
 
 from __future__ import (
-    absolute_import, division, print_function, unicode_literals
+    absolute_import, division, print_function, unicode_literals,
+    annotations
 )
+from typing import TYPE_CHECKING
 
 from ..enum.style import WD_STYLE_TYPE
 from .parfmt import ParagraphFormat
 from .run import Run
-from ..shared import Parented
 from ..runcntnr import RunItemContainer
 from .hyperlink import Hyperlink
 from ..oxml.ns import qn
 
+if TYPE_CHECKING:
+    from docx.parts.document import DocumentPart
+
 class Paragraph(RunItemContainer):
+    part: DocumentPart
+
     """
     Proxy object wrapping ``<w:p>`` element.
     """
