@@ -5,11 +5,15 @@ Initializes oxml sub-package, including registering custom element classes
 corresponding to Open XML elements.
 """
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
+from typing import TYPE_CHECKING
 
 from lxml import etree
 
 from .ns import NamespacePrefixedTag, nsmap
+
+if TYPE_CHECKING:
+    from docx.oxml.xmlchemy import MetaOxmlElement, BaseOxmlElement
 
 
 # configure XML parser
@@ -29,7 +33,7 @@ def parse_xml(xml):
     return root_element
 
 
-def register_element_cls(tag, cls):
+def register_element_cls(tag: str, cls: MetaOxmlElement):
     """
     Register *cls* to be constructed when the oxml parser encounters an
     element with matching *tag*. *tag* is a string of the form
@@ -40,7 +44,7 @@ def register_element_cls(tag, cls):
     namespace[tagroot] = cls
 
 
-def OxmlElement(nsptag_str, attrs=None, nsdecls=None):
+def OxmlElement(nsptag_str: str, attrs=None, nsdecls=None) -> BaseOxmlElement:
     """
     Return a 'loose' lxml element having the tag specified by *nsptag_str*.
     *nsptag_str* must contain the standard namespace prefix, e.g. 'a:tbl'.
@@ -55,6 +59,15 @@ def OxmlElement(nsptag_str, attrs=None, nsdecls=None):
     nsptag = NamespacePrefixedTag(nsptag_str)
     if nsdecls is None:
         nsdecls = nsptag.nsmap
+
+    print(nsdecls)
+    print(nsptag.clark_name)
+
+    result: BaseOxmlElement = oxml_parser.makeelement(
+        nsptag.clark_name, attrib=attrs, nsmap=nsdecls
+    )
+    print(f"{result}, {type(result)}")
+
     return oxml_parser.makeelement(
         nsptag.clark_name, attrib=attrs, nsmap=nsdecls
     )

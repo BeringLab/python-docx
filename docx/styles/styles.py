@@ -23,7 +23,7 @@ class Styles(ElementProxy):
     """
 
     __slots__ = ()
-    _element: CT_Styles
+    element: CT_Styles
 
     def __contains__(self, name):
         """

@@ -22,6 +22,8 @@ from ..oxml.ns import qn
 
 if TYPE_CHECKING:
     from docx.parts.document import DocumentPart
+    from docx.styles.style import _ParagraphStyle
+    from docx.oxml.text.paragraph import CT_P
 
 
 class Paragraph(RunItemContainer):
@@ -31,7 +33,7 @@ class Paragraph(RunItemContainer):
     Proxy object wrapping ``<w:p>`` element.
     """
 
-    def __init__(self, p, parent):
+    def __init__(self, p: CT_P, parent):
         super(Paragraph, self).__init__(p, parent)
         self._p = self._element = p
 
@@ -94,7 +96,7 @@ class Paragraph(RunItemContainer):
         ]
 
     @property
-    def style(self):
+    def style(self) -> _ParagraphStyle:
         """
         Read/Write. |_ParagraphStyle| object representing the style assigned
         to this paragraph. If no explicit style is assigned to this
