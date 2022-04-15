@@ -33,7 +33,7 @@ def parse_xml(xml):
     return root_element
 
 
-def register_element_cls(tag: str, cls: MetaOxmlElement):
+def register_element_cls(tag: str, cls: MetaOxmlElement) -> None:
     """
     Register *cls* to be constructed when the oxml parser encounters an
     element with matching *tag*. *tag* is a string of the form

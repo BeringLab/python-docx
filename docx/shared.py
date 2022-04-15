@@ -5,6 +5,7 @@ Objects shared by docx modules.
 """
 
 from __future__ import absolute_import, print_function, unicode_literals
+from typing import Callable
 
 
 class Length(int):
@@ -155,7 +156,7 @@ class RGBColor(tuple):
         return cls(r, g, b)
 
 
-def lazyproperty(f):
+def lazyproperty(f: Callable) -> property:
     """
     @lazyprop decorator. Decorated method will be called only on first access
     to calculate a cached property value. After that, the cached value is
