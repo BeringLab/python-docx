@@ -5,8 +5,13 @@ Custom element classes that correspond to the document part, e.g.
 <w:document>.
 """
 
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
 from .xmlchemy import BaseOxmlElement, ZeroOrOne, ZeroOrMore
 
+if TYPE_CHECKING:
+    from docx.oxml.section import CT_SectPr
 
 class CT_Document(BaseOxmlElement):
     """
@@ -32,7 +37,7 @@ class CT_Body(BaseOxmlElement):
     tbl = ZeroOrMore('w:tbl', successors=('w:sectPr',))
     sectPr = ZeroOrOne('w:sectPr', successors=())
 
-    def add_section_break(self):
+    def add_section_break(self) -> CT_SectPr:
         """Return `w:sectPr` element for new section added at end of document.
 
         The last `w:sectPr` becomes the second-to-last, with the new `w:sectPr` being an

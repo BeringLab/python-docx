@@ -4,7 +4,8 @@
 Run-related proxy objects for python-docx, Run in particular.
 """
 
-from __future__ import absolute_import, print_function, unicode_literals
+from __future__ import absolute_import, print_function, unicode_literals, annotations
+from typing import TYPE_CHECKING
 
 from ..enum.style import WD_STYLE_TYPE
 from ..enum.text import WD_BREAK
@@ -14,6 +15,9 @@ from ..shared import Parented
 from ..fntent.footnoteReference import FootnoteReference 
 from ..fntent.endnoteReference import EndnoteReference 
 
+if TYPE_CHECKING:
+    from docx.oxml.text.run import CT_R
+
 class Run(Parented):
     """
     Proxy object wrapping ``<w:r>`` element. Several of the properties on Run
@@ -22,6 +26,8 @@ class Run(Parented):
     not specified directly on the run and its effective value is taken from
     the style hierarchy.
     """
+    element: CT_R
+
     def __init__(self, r, parent):
         super(Run, self).__init__(parent)
         self._r = self._element = self.element = r

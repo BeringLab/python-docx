@@ -2,7 +2,8 @@
 
 """|Document| and closely related objects"""
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals, annotations
+from typing import TYPE_CHECKING
 
 from docx.blkcntnr import BlockItemContainer
 from docx.enum.section import WD_SECTION
@@ -10,6 +11,13 @@ from docx.enum.text import WD_BREAK
 from docx.section import Section, Sections
 from docx.shared import ElementProxy, Emu
 
+if TYPE_CHECKING:
+    from docx.parts.document import DocumentPart
+    from docx.styles.styles import Styles
+    from docx.shape import InlineShapes
+    from docx.oxml.document import CT_Document
+    from docx.oxml.section import CT_SectPr
+    from docx.parts.settings import Settings
 
 class Document(ElementProxy):
     """WordprocessingML (WML) document.
@@ -19,8 +27,9 @@ class Document(ElementProxy):
     """
 
     __slots__ = ('_part', '__body')
+    _element: CT_Document
 
-    def __init__(self, element, part):
+    def __init__(self, element, part: DocumentPart):
         super(Document, self).__init__(element)
         self._part = part
         self.__body = None
@@ -71,14 +80,14 @@ class Document(ElementProxy):
         run = self.add_paragraph().add_run()
         return run.add_picture(image_path_or_stream, width, height)
 
-    def add_section(self, start_type=WD_SECTION.NEW_PAGE):
+    def add_section(self, start_type: int=WD_SECTION.NEW_PAGE) -> Section:
         """
         Return a |Section| object representing a new section added at the end
         of the document. The optional *start_type* argument must be a member
         of the :ref:`WdSectionStart` enumeration, and defaults to
         ``WD_SECTION.NEW_PAGE`` if not provided.
         """
-        new_sectPr = self._element.body.add_section_break()
+        new_sectPr: CT_SectPr = self._element.body.add_section_break()
         new_sectPr.start_type = start_type
         return Section(new_sectPr, self._part)
 
@@ -102,7 +111,7 @@ class Document(ElementProxy):
         return self._part.core_properties
 
     @property
-    def inline_shapes(self):
+    def inline_shapes(self) -> InlineShapes:
         """
         An |InlineShapes| object providing access to the inline shapes in
         this document. An inline shape is a graphical object, such as
@@ -121,7 +130,7 @@ class Document(ElementProxy):
         return self._body.paragraphs
 
     @property
-    def part(self):
+    def part(self) -> DocumentPart:
         """
         The |DocumentPart| object of this document.
         """
@@ -135,12 +144,12 @@ class Document(ElementProxy):
         self._part.save(path_or_stream)
 
     @property
-    def sections(self):
+    def sections(self) -> Sections:
         """|Sections| object providing access to each section in this document."""
         return Sections(self._element, self._part)
 
     @property
-    def settings(self):
+    def settings(self) -> Settings:
         """
         A |Settings| object providing access to the document-level settings
         for this document.
@@ -148,7 +157,7 @@ class Document(ElementProxy):
         return self._part.settings
 
     @property
-    def styles(self):
+    def styles(self) -> Styles:
         """
         A |Styles| object providing access to the styles in this document.
         """
@@ -177,7 +186,7 @@ class Document(ElementProxy):
         )
 
     @property
-    def _body(self):
+    def _body(self) -> _Body:
         """
         The |_Body| instance containing the content for this document.
         """

@@ -5,22 +5,35 @@ Paragraph-related proxy types.
 """
 
 from __future__ import (
-    absolute_import, division, print_function, unicode_literals
+    absolute_import,
+    division,
+    print_function,
+    unicode_literals,
+    annotations,
 )
+from typing import TYPE_CHECKING
 
 from ..enum.style import WD_STYLE_TYPE
 from .parfmt import ParagraphFormat
 from .run import Run
-from ..shared import Parented
 from ..runcntnr import RunItemContainer
 from .hyperlink import Hyperlink
 from ..oxml.ns import qn
 
+if TYPE_CHECKING:
+    from docx.parts.document import DocumentPart
+    from docx.styles.style import _ParagraphStyle
+    from docx.oxml.text.paragraph import CT_P
+
+
 class Paragraph(RunItemContainer):
+    part: DocumentPart
+
     """
     Proxy object wrapping ``<w:p>`` element.
     """
-    def __init__(self, p, parent):
+
+    def __init__(self, p: CT_P, parent):
         super(Paragraph, self).__init__(p, parent)
         self._p = self._element = p
 
@@ -75,13 +88,15 @@ class Paragraph(RunItemContainer):
     @property
     def runs(self):
         return super(Paragraph, self).runs
-    
-    @property
-    def inline_items(self):
-        return [self._get_inline_item_class(t.tag)(t, self) for t in self._p.inline_items]
 
     @property
-    def style(self):
+    def inline_items(self):
+        return [
+            self._get_inline_item_class(t.tag)(t, self) for t in self._p.inline_items
+        ]
+
+    @property
+    def style(self) -> _ParagraphStyle:
         """
         Read/Write. |_ParagraphStyle| object representing the style assigned
         to this paragraph. If no explicit style is assigned to this
@@ -95,9 +110,7 @@ class Paragraph(RunItemContainer):
 
     @style.setter
     def style(self, style_or_name):
-        style_id = self.part.get_style_id(
-            style_or_name, WD_STYLE_TYPE.PARAGRAPH
-        )
+        style_id = self.part.get_style_id(style_or_name, WD_STYLE_TYPE.PARAGRAPH)
         self._p.style = style_id
 
     @property
@@ -114,7 +127,7 @@ class Paragraph(RunItemContainer):
         Paragraph-level formatting, such as style, is preserved. All
         run-level formatting, such as bold or italic, is removed.
         """
-        text = ''
+        text = ""
         for inline in self.inline_items:
             text += inline.text
         return text
@@ -133,8 +146,8 @@ class Paragraph(RunItemContainer):
         return Paragraph(p, self._parent)
 
     def _get_inline_item_class(self, tag):
-        if tag == qn('w:r'):
+        if tag == qn("w:r"):
             return Run
 
-        if tag == qn('w:hyperlink'):
+        if tag == qn("w:hyperlink"):
             return Hyperlink

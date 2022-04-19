@@ -5,8 +5,9 @@ Style object hierarchy.
 """
 
 from __future__ import (
-    absolute_import, division, print_function, unicode_literals
+    absolute_import, division, print_function, unicode_literals, annotations
 )
+from typing import Union, TYPE_CHECKING
 
 from . import BabelFish
 from ..enum.style import WD_STYLE_TYPE
@@ -14,6 +15,8 @@ from ..shared import ElementProxy
 from ..text.font import Font
 from ..text.parfmt import ParagraphFormat
 
+if TYPE_CHECKING:
+    from docx.oxml.styles import CT_Style
 
 def StyleFactory(style_elm):
     """
@@ -27,7 +30,11 @@ def StyleFactory(style_elm):
         WD_STYLE_TYPE.LIST:      _NumberingStyle
     }[style_elm.type]
 
-    return style_cls(style_elm)
+    style_cls_result: Union[_ParagraphStyle, 
+                            _CharacterStyle, 
+                            _TableStyle, 
+                            _NumberingStyle] = style_cls(style_elm)
+    return style_cls_result
 
 
 class BaseStyle(ElementProxy):
@@ -208,6 +215,7 @@ class _ParagraphStyle(_CharacterStyle):
     and paragraph formatting such as indentation and line-spacing.
     """
 
+    element: CT_Style
     __slots__ = ()
 
     def __repr__(self):

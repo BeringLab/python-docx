@@ -6,15 +6,19 @@ Provides a syntactically more convenient API for interacting with the
 OpcPackage graph.
 """
 
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, division, print_function, annotations
+from typing import TYPE_CHECKING
 
 import os
 
 from docx.opc.constants import CONTENT_TYPE as CT
 from docx.package import Package
 
+if TYPE_CHECKING:
+    from docx.document import Document as DocumentType
 
-def Document(docx=None):
+
+def Document(docx=None) -> DocumentType:
     """
     Return a |Document| object loaded from *docx*, where *docx* can be
     either a path to a ``.docx`` file (a string) or a file-like object. If

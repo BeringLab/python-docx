@@ -5,8 +5,10 @@ Open Packaging Convention (OPC) objects related to package parts.
 """
 
 from __future__ import (
-    absolute_import, division, print_function, unicode_literals
+    absolute_import, division, print_function, unicode_literals,
+    annotations
 )
+from typing import TYPE_CHECKING
 
 from .compat import cls_method_fn
 from .oxml import serialize_part_xml
@@ -15,6 +17,8 @@ from .packuri import PackURI
 from .rel import Relationships
 from .shared import lazyproperty
 
+if TYPE_CHECKING:
+    from docx.opc.package import OpcPackage
 
 class Part(object):
     """
@@ -90,7 +94,7 @@ class Part(object):
         return self.rels.add_relationship(reltype, target, rId, is_external)
 
     @property
-    def package(self):
+    def package(self) -> OpcPackage:
         """
         |OpcPackage| instance this part belongs to.
         """

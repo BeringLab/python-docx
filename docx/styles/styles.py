@@ -2,7 +2,8 @@
 
 """Styles object, container for all objects in the styles part"""
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals, annotations
+from typing import TYPE_CHECKING
 
 from warnings import warn
 
@@ -11,6 +12,8 @@ from docx.styles import BabelFish
 from docx.styles.latent import LatentStyles
 from docx.styles.style import BaseStyle, StyleFactory
 
+if TYPE_CHECKING:
+    from docx.oxml import CT_Styles
 
 class Styles(ElementProxy):
     """Provides access to the styles defined in a document.
@@ -20,6 +23,7 @@ class Styles(ElementProxy):
     """
 
     __slots__ = ()
+    element: CT_Styles
 
     def __contains__(self, name):
         """

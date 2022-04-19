@@ -2,16 +2,20 @@
 
 """Settings object, providing access to document-level settings"""
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals, annotations
+from typing import TYPE_CHECKING
 
 from docx.shared import ElementProxy
 
+if TYPE_CHECKING:
+    from docx.oxml.settings import CT_Settings
 
 class Settings(ElementProxy):
     """Provides access to document-level settings for a document.
 
     Accessed using the :attr:`.Document.settings` property.
     """
+    element: CT_Settings
 
     __slots__ = ()
 

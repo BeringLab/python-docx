@@ -2,13 +2,18 @@
 
 """The |Section| object and related proxy classes"""
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals, annotations
+from typing import TYPE_CHECKING
 
 from docx.blkcntnr import BlockItemContainer
 from docx.compat import Sequence
 from docx.enum.section import WD_HEADER_FOOTER
 from docx.shared import lazyproperty
 
+if TYPE_CHECKING:
+    from docx.shared import Length
+    from docx.oxml.section import CT_SectPr
+    from docx.parts.document import DocumentPart
 
 class Sections(Sequence):
     """Sequence of |Section| objects corresponding to the sections in the document.
@@ -43,13 +48,13 @@ class Section(object):
     Also provides access to headers and footers.
     """
 
-    def __init__(self, sectPr, document_part):
+    def __init__(self, sectPr: CT_SectPr, document_part: DocumentPart):
         super(Section, self).__init__()
         self._sectPr = sectPr
         self._document_part = document_part
 
     @property
-    def bottom_margin(self):
+    def bottom_margin(self) -> Length:
         """
         |Length| object representing the bottom margin for all pages in this
         section in English Metric Units.
