@@ -138,6 +138,8 @@ class CT_NonVisualPictureProperties(BaseOxmlElement):
 class CT_Picture(BaseOxmlElement):
     """
     ``<pic:pic>`` element, a DrawingML picture
+
+    TODO get `Image` object for export directly.
     """
 
     nvPicPr: CT_PictureNonVisual = OneAndOnlyOne("pic:nvPicPr")
@@ -314,3 +316,10 @@ class CT_Transform2D(BaseOxmlElement):
     def cy(self, value):
         ext = self.get_or_add_ext()
         ext.cy = value
+
+
+class CT_Drawing(BaseOxmlElement):
+    """
+    ``<w:drawing>`` element, include drawing info.
+    but not implemented
+    """

@@ -263,3 +263,6 @@ register_element_cls('w:endnote',           CT_Endnote)
 register_element_cls('w:endnotes',          CT_Endnotes)
 register_element_cls('w:footnoteReference', CT_FootnoteReference)
 register_element_cls('w:endnoteReference',  CT_EndnoteReference)
+
+# from .shape import CT_Drawing  # not implemented
+# register_element_cls('w:drawing', CT_Drawing)
