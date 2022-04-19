@@ -5,14 +5,18 @@ The proxy class for an image part, and related objects.
 """
 
 from __future__ import (
-    absolute_import, division, print_function, unicode_literals
+    absolute_import, division, print_function, unicode_literals,
+    annotations
 )
-
+from typing import TYPE_CHECKING
 import hashlib
 
 from docx.image.image import Image
 from docx.opc.part import Part
 from docx.shared import Emu, Inches
+
+if TYPE_CHECKING:
+    from docx.shared import Length
 
 
 class ImagePart(Part):
@@ -20,12 +24,12 @@ class ImagePart(Part):
     An image part. Corresponds to the target part of a relationship with type
     RELATIONSHIP_TYPE.IMAGE.
     """
-    def __init__(self, partname, content_type, blob, image=None):
+    def __init__(self, partname, content_type: str, blob: bytes, image: Image=None):
         super(ImagePart, self).__init__(partname, content_type, blob)
         self._image = image
 
     @property
-    def default_cx(self):
+    def default_cx(self) -> Length:
         """
         Native width of this image, calculated from its width in pixels and
         horizontal dots per inch (dpi).
@@ -36,7 +40,7 @@ class ImagePart(Part):
         return Inches(width_in_inches)
 
     @property
-    def default_cy(self):
+    def default_cy(self) -> Length:
         """
         Native height of this image, calculated from its height in pixels and
         vertical dots per inch (dpi).
@@ -47,7 +51,7 @@ class ImagePart(Part):
         return Emu(height_in_emu)
 
     @property
-    def filename(self):
+    def filename(self) -> str:
         """
         Filename from which this image part was originally created. A generic
         name, e.g. 'image.png', is substituted if no name is available, for
@@ -60,7 +64,7 @@ class ImagePart(Part):
         return 'image.%s' % self.partname.ext
 
     @classmethod
-    def from_image(cls, image, partname):
+    def from_image(cls, image, partname) -> ImagePart:
         """
         Return an |ImagePart| instance newly created from *image* and
         assigned *partname*.
@@ -68,13 +72,13 @@ class ImagePart(Part):
         return ImagePart(partname, image.content_type, image.blob, image)
 
     @property
-    def image(self):
+    def image(self) -> Image:
         if self._image is None:
             self._image = Image.from_blob(self.blob)
         return self._image
 
     @classmethod
-    def load(cls, partname, content_type, blob, package):
+    def load(cls, partname, content_type: str, blob: bytes, package):
         """
         Called by ``docx.opc.package.PartFactory`` to load an image part from
         a package being opened by ``Document(...)`` call.
