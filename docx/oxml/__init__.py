@@ -60,13 +60,9 @@ def OxmlElement(nsptag_str: str, attrs=None, nsdecls=None) -> BaseOxmlElement:
     if nsdecls is None:
         nsdecls = nsptag.nsmap
 
-    print(nsdecls)
-    print(nsptag.clark_name)
-
     result: BaseOxmlElement = oxml_parser.makeelement(
         nsptag.clark_name, attrib=attrs, nsmap=nsdecls
     )
-    print(f"{result}, {type(result)}")
 
     return oxml_parser.makeelement(
         nsptag.clark_name, attrib=attrs, nsmap=nsdecls
