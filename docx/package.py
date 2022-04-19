@@ -2,7 +2,9 @@
 
 """WordprocessingML Package class and related objects"""
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals, annotations
+from optparse import Option
+from typing import List, Optional
 
 from docx.image.image import Image
 from docx.opc.constants import RELATIONSHIP_TYPE as RT
@@ -22,16 +24,17 @@ class Package(OpcPackage):
         """
         self._gather_image_parts()
 
-    def get_or_add_image_part(self, image_descriptor):
+    def get_or_add_image_part(self, image_descriptor) -> ImagePart:
         """Return |ImagePart| containing image specified by *image_descriptor*.
 
         The image-part is newly created if a matching one is not already present in the
         collection.
         """
-        return self.image_parts.get_or_add_image_part(image_descriptor)
+        image_parts: ImageParts = self.image_parts
+        return image_parts.get_or_add_image_part(image_descriptor)
 
     @lazyproperty
-    def image_parts(self):
+    def image_parts(self) -> ImageParts:
         """|ImageParts| collection object for this package."""
         return ImageParts()
 
@@ -51,9 +54,9 @@ class ImageParts(object):
     """Collection of |ImagePart| objects corresponding to images in the package"""
 
     def __init__(self):
-        self._image_parts = []
+        self._image_parts: List[ImagePart] = []
 
-    def __contains__(self, item):
+    def __contains__(self, item: ImagePart):
         return self._image_parts.__contains__(item)
 
     def __iter__(self):
@@ -62,7 +65,8 @@ class ImageParts(object):
     def __len__(self):
         return self._image_parts.__len__()
 
-    def append(self, item):
+    def append(self, item: ImagePart) -> None:
+        """append image part"""
         self._image_parts.append(item)
 
     def get_or_add_image_part(self, image_descriptor):
@@ -77,7 +81,7 @@ class ImageParts(object):
             return matching_image_part
         return self._add_image_part(image)
 
-    def _add_image_part(self, image):
+    def _add_image_part(self, image) -> ImagePart:
         """
         Return an |ImagePart| instance newly created from image and appended
         to the collection.
@@ -87,7 +91,7 @@ class ImageParts(object):
         self.append(image_part)
         return image_part
 
-    def _get_by_sha1(self, sha1):
+    def _get_by_sha1(self, sha1) -> Option[ImagePart]:
         """
         Return the image part in this collection having a SHA1 hash matching
         *sha1*, or |None| if not found.
