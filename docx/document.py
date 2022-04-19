@@ -3,7 +3,7 @@
 """|Document| and closely related objects"""
 
 from __future__ import absolute_import, division, print_function, unicode_literals, annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
 from docx.blkcntnr import BlockItemContainer
 from docx.enum.section import WD_SECTION
@@ -12,12 +12,17 @@ from docx.section import Section, Sections
 from docx.shared import ElementProxy, Emu
 
 if TYPE_CHECKING:
+    from docx.text.paragraph import Paragraph
     from docx.parts.document import DocumentPart
     from docx.styles.styles import Styles
     from docx.shape import InlineShapes
     from docx.oxml.document import CT_Document
     from docx.oxml.section import CT_SectPr
     from docx.parts.settings import Settings
+    from docx.opc.coreprops import CoreProperties
+    from docx.table import Table
+    from docx.shared import Length
+    from docx.oxml.document import CT_Body
 
 class Document(ElementProxy):
     """WordprocessingML (WML) document.
@@ -34,7 +39,7 @@ class Document(ElementProxy):
         self._part = part
         self.__body = None
 
-    def add_heading(self, text="", level=1):
+    def add_heading(self, text="", level=1) -> Paragraph:
         """Return a heading paragraph newly added to the end of the document.
 
         The heading paragraph will contain *text* and have its paragraph style
@@ -91,7 +96,7 @@ class Document(ElementProxy):
         new_sectPr.start_type = start_type
         return Section(new_sectPr, self._part)
 
-    def add_table(self, rows, cols, style=None):
+    def add_table(self, rows, cols, style=None) -> Table:
         """
         Add a table having row and column counts of *rows* and *cols*
         respectively and table style of *style*. *style* may be a paragraph
@@ -103,7 +108,7 @@ class Document(ElementProxy):
         return table
 
     @property
-    def core_properties(self):
+    def core_properties(self) -> CoreProperties:
         """
         A |CoreProperties| object providing read/write access to the core
         properties of this document.
@@ -121,7 +126,7 @@ class Document(ElementProxy):
         return self._part.inline_shapes
 
     @property
-    def paragraphs(self):
+    def paragraphs(self) -> List[Paragraph]:
         """
         A list of |Paragraph| instances corresponding to the paragraphs in
         the document, in document order. Note that paragraphs within revision
@@ -164,7 +169,7 @@ class Document(ElementProxy):
         return self._part.styles
 
     @property
-    def tables(self):
+    def tables(self) -> List[Table]:
         """
         A list of |Table| instances corresponding to the tables in the
         document, in document order. Note that only tables appearing at the
@@ -175,7 +180,7 @@ class Document(ElementProxy):
         return self._body.tables
 
     @property
-    def _block_width(self):
+    def _block_width(self) -> Length:
         """
         Return a |Length| object specifying the width of available "writing"
         space between the margins of the last section of this document.
@@ -200,7 +205,7 @@ class _Body(BlockItemContainer):
     Proxy for ``<w:body>`` element in this document, having primarily a
     container role.
     """
-    def __init__(self, body_elm, parent):
+    def __init__(self, body_elm: CT_Body, parent):
         super(_Body, self).__init__(body_elm, parent)
         self._body = body_elm
 
