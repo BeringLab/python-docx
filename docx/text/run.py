@@ -5,7 +5,7 @@ Run-related proxy objects for python-docx, Run in particular.
 """
 
 from __future__ import absolute_import, print_function, unicode_literals, annotations
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Union, List
 
 from ..enum.style import WD_STYLE_TYPE
 from ..enum.text import WD_BREAK
@@ -18,6 +18,7 @@ from ..fntent.endnoteReference import EndnoteReference
 if TYPE_CHECKING:
     from docx.oxml.text.run import CT_R
     from docx.text.paragraph import Paragraph
+    from docx.oxml.xmlchemy import MetaOxmlElement
 
 class Run(Parented):
     """
@@ -203,6 +204,13 @@ class Run(Parented):
         """
 
         return [EndnoteReference(endnoteReference, self) for endnoteReference in self._r.endnoteReference_lst]
+
+    def xpath(self, path: str) -> List[MetaOxmlElement]:
+        """
+        Return list of element.
+        if Element is not wrapped return `_Element` object.
+        """
+        return self._r.xpath(path)
 
 class _Text(object):
     """
