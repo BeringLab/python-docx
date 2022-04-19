@@ -15,6 +15,7 @@ from ..xmlchemy import (
 
 if TYPE_CHECKING:
     from lxml.etree import _Element
+    from docx.oxml.text.font import CT_RPr
 
 
 class CT_Br(BaseOxmlElement):
@@ -29,7 +30,7 @@ class CT_R(BaseOxmlElement):
     """
     ``<w:r>`` element, containing the properties and text for a run.
     """
-    rPr = ZeroOrOne('w:rPr')
+    rPr: CT_RPr = ZeroOrOne('w:rPr')
     t = ZeroOrMore('w:t')
     br = ZeroOrMore('w:br')
     cr = ZeroOrMore('w:cr')
@@ -43,7 +44,7 @@ class CT_R(BaseOxmlElement):
         self.insert(0, rPr)
         return rPr
 
-    def add_t(self, text):
+    def add_t(self, text: str):
         """
         Return a newly added ``<w:t>`` element containing *text*.
         """
