@@ -4,9 +4,13 @@
 Objects shared by docx modules.
 """
 
-from __future__ import absolute_import, print_function, unicode_literals
-from typing import Callable
+from __future__ import absolute_import, print_function, unicode_literals, annotations
+from typing import Callable, TYPE_CHECKING, Union
 
+
+if TYPE_CHECKING:
+    from docx.text.paragraph import Paragraph
+    from docx.parts.document import DocumentPart
 
 class Length(int):
     """
@@ -239,12 +243,12 @@ class Parented(object):
     such as add or drop a relationship. Provides ``self._parent`` attribute
     to subclasses.
     """
-    def __init__(self, parent):
+    def __init__(self, parent: Union[Paragraph, None]):
         super(Parented, self).__init__()
         self._parent = parent
 
     @property
-    def part(self):
+    def part(self) -> Union[DocumentPart, None]:
         """
         The package part containing this object
         """

@@ -6,13 +6,17 @@ a document.
 """
 
 from __future__ import (
-    absolute_import, division, print_function, unicode_literals
+    absolute_import, division, print_function, unicode_literals,
+    annotations
 )
+from typing import TYPE_CHECKING
 
 from .enum.shape import WD_INLINE_SHAPE
 from .oxml.ns import nsmap
 from .shared import Parented
 
+if TYPE_CHECKING:
+    from docx.oxml.shape import CT_Inline
 
 class InlineShapes(Parented):
     """
@@ -52,7 +56,7 @@ class InlineShape(object):
     Proxy for an ``<wp:inline>`` element, representing the container for an
     inline graphical object.
     """
-    def __init__(self, inline):
+    def __init__(self, inline: CT_Inline):
         super(InlineShape, self).__init__()
         self._inline = inline
 

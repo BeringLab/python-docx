@@ -5,7 +5,7 @@ Run-related proxy objects for python-docx, Run in particular.
 """
 
 from __future__ import absolute_import, print_function, unicode_literals, annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from ..enum.style import WD_STYLE_TYPE
 from ..enum.text import WD_BREAK
@@ -17,6 +17,7 @@ from ..fntent.endnoteReference import EndnoteReference
 
 if TYPE_CHECKING:
     from docx.oxml.text.run import CT_R
+    from docx.text.paragraph import Paragraph
 
 class Run(Parented):
     """
@@ -26,9 +27,8 @@ class Run(Parented):
     not specified directly on the run and its effective value is taken from
     the style hierarchy.
     """
-    element: CT_R
 
-    def __init__(self, r, parent):
+    def __init__(self, r: CT_R, parent: Union[Paragraph, None]):
         super(Run, self).__init__(parent)
         self._r = self._element = self.element = r
 
@@ -53,7 +53,7 @@ class Run(Parented):
         if clear is not None:
             br.clear = clear
 
-    def add_picture(self, image_path_or_stream, width=None, height=None):
+    def add_picture(self, image_path_or_stream, width=None, height=None) -> InlineShape:
         """
         Return an |InlineShape| instance containing the image identified by
         *image_path_or_stream*, added to the end of this run.

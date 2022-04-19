@@ -4,11 +4,17 @@
 Custom element classes related to text runs (CT_R).
 """
 
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
 from ..ns import qn
 from ..simpletypes import ST_BrClear, ST_BrType
 from ..xmlchemy import (
     BaseOxmlElement, OptionalAttribute, ZeroOrMore, ZeroOrOne
 )
+
+if TYPE_CHECKING:
+    from lxml.etree import _Element
 
 
 class CT_Br(BaseOxmlElement):
@@ -51,7 +57,7 @@ class CT_R(BaseOxmlElement):
         Return a newly appended ``CT_Drawing`` (``<w:drawing>``) child
         element having *inline_or_anchor* as its child.
         """
-        drawing = self._add_drawing()
+        drawing: _Element = self._add_drawing()
         drawing.append(inline_or_anchor)
         return drawing
 
