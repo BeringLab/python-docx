@@ -210,7 +210,7 @@ class Run(Parented):
         Return list of element.
         if Element is not wrapped return `_Element` object.
         """
-        return self._r.xpath(path)
+        return self._element.xpath(path)
 
 class _Text(object):
     """
