@@ -205,12 +205,6 @@ class Run(Parented):
 
         return [EndnoteReference(endnoteReference, self) for endnoteReference in self._r.endnoteReference_lst]
 
-    def xpath(self, path: str) -> List[MetaOxmlElement]:
-        """
-        Return list of element.
-        if Element is not wrapped return `_Element` object.
-        """
-        return self._element.xpath(path)
 
 class _Text(object):
     """
