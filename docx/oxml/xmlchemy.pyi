@@ -8,7 +8,51 @@ if TYPE_CHECKING:
     from lxml.etree import _Element
 
 class XmlString(Unicode):
-    pass
+    ...
+
+
+class MetaOxmlElement(type):
+    ...
+
+
+class BaseAttribute(object):
+    ...
+
+
+class OptionalAttribute(BaseAttribute):
+    ...
+
+
+class RequiredAttribute(BaseAttribute):
+    ...
+
+class _BaseChildElement(object):
+    ...
+
+
+class Choice(_BaseChildElement):
+    ...
+
+
+class OneAndOnlyOne(_BaseChildElement):
+    ...
+
+
+class OneOrMore(_BaseChildElement):
+    ...
+
+
+class ZeroOrMore(_BaseChildElement):
+    ...
+
+
+class ZeroOrOne(_BaseChildElement):
+    ...
+
+
+class ZeroOrOneChoice(_BaseChildElement):
+    ...
+    
 
 class BaseOxmlElement:
     """
